@@ -10,7 +10,7 @@ const CursoStack = () => {
         <>
             <Stack.Navigator>
                 <Stack.Screen name="cursos" component={Cursos} options={{ title: 'Cursos' }} />
-                <Stack.Screen name="cursos-form" component={CursosForm} options={{ title: 'Cursos' }} />
+                <Stack.Screen name="cursos-form" component={CursosForm} options={{ title: 'Curso-Formulário' }} />
             </Stack.Navigator>
         </>
     )
