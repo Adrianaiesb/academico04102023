@@ -1,53 +1,140 @@
-import React, { usestate } from 'react'
-import { ScrollView } from 'react-native-web'
-import { Text } from 'react-native'
-import { Button, TextInput } from 'react-native-paper'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
+import React, { useState } from 'react'
+import { ScrollView } from 'react-native'
+import { Button, Text, TextInput } from 'react-native-paper'
 
+const AlunosForm = ({ navigation }) => {
 
-const AlunosForm = () => {
-  const [dados, setDados] = usestate({})
+    const [dados, setDados] = useState({})
 
-  function handleChange(valor, campo) {
-    setDados({ ...dados, [campo]: valor })
-  }
+    async function handleChange(valor, campo) {
 
-  function salvar() {
-    console.log(dados)
-  }
+        let endereco = {}
+        if (campo == 'cep' && valor.length == 8) {
+            endereco = await getEndereco(valor)
+            console.log(endereco);
+            setDados({ ...dados, ...endereco, [campo]: valor })
+        } else {
+            setDados({ ...dados, [campo]: valor })
+        }
+    }
 
-  return (
-    <>
-      <ScrollView style={{ margin: 15 }}>
+    async function getEndereco(cep) {
+        const endereco = await axios.get(`https://viacep.com.br/ws/${cep}/json/`)
+        return endereco.data
+    }
 
-        <Text>Formulário de Alunos</Text>
+    function salvar() {
 
-        <TextInput
-          style={{ marginTop: 15 }}
-          mode='outlined'
-          label='Nome'
-          onChangeText={(valor) => handleChange(valor)} />
+      AsyncStorage.getItem('alunos').then(resultado => {
 
-        <TextInput
-          style={{ marginTop: 10 }}
-          mode='outlined'
-          label='CPF'
-          keyboardType='decimal-pad'
-          value={dados.duracao}
-          onChangeText={(valor) => handleChange(valor, 'cpf')} />
+        const alunos = JSON.parse(resultado) || []
 
-        <TextInput
-          style={{ marginTop: 10 }}
-          mode='outlined'
-          label='Telefone'
-          keyboardType='number-pad'
-          value={dados.telefone}
-          onChangeText={(valor) => handleChange(valor, 'telefone')} />
+        alunos.push(dados)
+        console.log(alunos)
 
-        <Button onPress={salvar}>salvar</Button>
+        AsyncStorage.setItem('alunos', JSON.stringify(alunos))
 
-      </ScrollView>
-    </>
-  )
+        navigation.goBack()
+
+      })
+      
+        
+    }
+
+    return (
+        <ScrollView style={{ margin: 15 }}>
+            <Text>Formulário de Curso</Text>
+
+            <TextInput
+                style={{ marginTop: 10 }}
+                mode='outlined'
+                label='Nome'
+                value={dados.nome}
+                onChangeText={(valor) => handleChange(valor, 'nome')}
+            />
+
+            <TextInput
+                style={{ marginTop: 10 }}
+                mode='outlined'
+                label='CPF'
+                keyboardType='decimal-pad'
+                value={dados.cpf}
+                onChangeText={(valor) => handleChange(valor, 'cpf')}
+            />
+
+            <TextInput
+                style={{ marginTop: 10 }}
+                mode='outlined'
+                label='Matrícula'
+                value={dados.matricula}
+                onChangeText={(valor) => handleChange(valor, 'matricula')}
+            />
+
+            <TextInput
+                style={{ marginTop: 10 }}
+                mode='outlined'
+                label='E-mail'
+                keyboardType='email-address'
+                value={dados.email}
+                onChangeText={(valor) => handleChange(valor, 'email')}
+            />
+
+            <TextInput
+                style={{ marginTop: 10 }}
+                mode='outlined'
+                label='Telefone'
+                keyboardType='number-pad'
+                value={dados.telefone}
+                onChangeText={(valor) => handleChange(valor, 'telefone')}
+            />
+
+            <TextInput
+                style={{ marginTop: 10 }}
+                mode='outlined'
+                label='CEP'
+                value={dados.cep}
+                keyboardType='number-pad'
+                onChangeText={(valor) => handleChange(valor, 'cep')}
+            />
+
+            <TextInput
+                style={{ marginTop: 10 }}
+                mode='outlined'
+                label='Logradouro'
+                value={dados.logradouro}
+                onChangeText={(valor) => handleChange(valor, 'logradouro')}
+            />
+
+            <TextInput
+                style={{ marginTop: 10 }}
+                mode='outlined'
+                label='Complemento'
+                value={dados.complemento}
+                onChangeText={(valor) => handleChange(valor, 'complemento')}
+            />
+
+            <TextInput
+                style={{ marginTop: 10 }}
+                mode='outlined'
+                label='Número'
+                value={dados.numero}
+                onChangeText={(valor) => handleChange(valor, 'numero')}
+            />
+
+            <TextInput
+                style={{ marginTop: 10 }}
+                mode='outlined'
+                label='Bairro'
+                value={dados.bairro}
+                onChangeText={(valor) => handleChange(valor, 'bairro')}
+            />
+
+          <Button onPress={salvar}>Salvar</Button>
+
+        </ScrollView>
+    )
 }
 
 export default AlunosForm
