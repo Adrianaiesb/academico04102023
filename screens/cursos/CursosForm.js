@@ -27,7 +27,7 @@ const CursosForm = ({ navigation }) => {
   }
 
   return (
-    <ScrollView style={{ margin: 15 }}>
+    <ScrollView>
       <Text>Formulário de Curso</Text>
 
       <TextInput

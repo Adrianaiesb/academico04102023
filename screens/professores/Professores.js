@@ -24,7 +24,7 @@ const Professores = ({navigation}) => {
         <Button 
             icon='plus' 
             mode='contained' 
-            onPress={()=>navigation.push('Professores-form')}>
+            onPress={()=>navigation.push('professores-form')}>
         
             Novo
         </Button>

@@ -1,37 +1,59 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useFocusEffect } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { Button, Text } from 'react-native-paper'
+import { ScrollView, View } from 'react-native'
+import { Button, Card, FAB, IconButton, Text } from 'react-native-paper'
 
 const Cursos = ({ navigation }) => {
 
   const [cursos, setCursos] = useState([])
 
-  useEffect(() => {
-    AsyncStorage.getItem('cursos').then(resultado => {
+  useFocusEffect(
+    React.useCallback(() => {
 
-      resultado = JSON.parse(resultado) || []
+      AsyncStorage.getItem('cursos').then(resultado => {
 
-      console.log(resultado)
-      setCursos(resultado)
-    })
-  }, [])
+        resultado = JSON.parse(resultado) || []
+
+        console.log(resultado)
+        setCursos(resultado)
+      })
+
+    }, [])
+  );
 
   return (
     <>
-      <Text>Cursos</Text>
+      <ScrollView style={{ padding: 15 }}>
 
-      {cursos.map(item => (
-        <Text>{item.nome}</Text>
-      ))}
+        {cursos.map((item, i) => (
+          <Card key={i} mode='outlined' style={{ marginBottom: 10 }}>
+            <Card.Content>
+              <Text variant="titleLarge">{item.nome}</Text>
+              <Text variant="bodyMedium">Duração: {item.duracao}sem.</Text>
+              <Text variant="bodyMedium">Modalidade: {item.modalidade}</Text>
+            </Card.Content>
+            <Card.Actions>
+              <IconButton icon='pencil-outline' />
+              <IconButton icon='delete' />
+            </Card.Actions>
+          </Card>
+        ))}
 
-      <Button
-        icon='plus'
-        mode='contained'
+      </ScrollView>
+      <FAB
+        icon="plus"
+        size='small'
+        color='green'
+        style={{
+          position: 'absolute',
+          right: 10,
+          bottom: 10,
+        }}
         onPress={() => navigation.push('cursos-form')}
-      >
-        Novo
-      </Button>
+      />
     </>
+
   )
 }
 
