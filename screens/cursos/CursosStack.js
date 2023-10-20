@@ -5,15 +5,15 @@ import CursosForm from './CursosForm';
 
 const Stack = createNativeStackNavigator();
 
-const CursoStack = () => {
+const CursosStack = () => {
     return (
         <>
             <Stack.Navigator>
                 <Stack.Screen name="cursos" component={Cursos} options={{ title: 'Cursos' }} />
-                <Stack.Screen name="cursos-form" component={CursosForm} options={{ title: 'Curso-Formulário' }} />
+                <Stack.Screen name="Cursos-Formulário" component={CursosForm} options={{ title: 'Cursos' }} />
             </Stack.Navigator>
         </>
     )
 }
 
-export default CursoStack
+export default CursosStack

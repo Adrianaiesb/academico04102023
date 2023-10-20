@@ -2,7 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useEffect, useState } from 'react'
 import { Button, Text } from 'react-native-paper'
 
-const Alunos = ({navigation}) => {
+const alunos = ({ navigation }) => {
+
   const [alunos, setAlunos] = useState([])
 
   useEffect(() => {
@@ -14,22 +15,22 @@ const Alunos = ({navigation}) => {
       setAlunos(resultado)
     })
   }, [])
+
   return (
     <>
+      <>
         <Text>Alunos</Text>
-
         {alunos.map(item => (
-        <Text>{item.nome}</Text>
-      ))}
-        <Button 
-            icon='plus' 
-            mode='contained' 
-            onPress={()=>navigation.push('alunos-form')}>
-        
-            Novo
+          <Text>{item.nome}</Text>
+        ))}
+        <Button icon='plus'
+          mode='contained'
+          onPress={() => navigation.push('alunos-Formulário')}>
+          Novo
         </Button>
+      </>
     </>
   )
 }
 
-export default Alunos
+export default alunos
